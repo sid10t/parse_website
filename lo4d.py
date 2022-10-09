@@ -38,21 +38,25 @@ def get_info(url):
     info = {"name":name, "url":down_url}
     return info
 
-def download(url):
+def download(url, basePath):
     info = get_info(url)
-    with open(info['name'], "wb") as f:
+    path = os.path.join(basePath, info['name'])
+    print(path)
+    with open(path, "wb") as f:
         f.write(requests.get(info['url'], headers=headers, proxies=proxies).content)
 
 if __name__ == '__main__':
-    first = "Audio & Video"
+    basePath = os.path.join(os.getcwd(), "Audio & Video")
     size = 5
+    if not os.path.exists(basePath):
+        os.makedirs(basePath)
     with ThreadPoolExecutor(20) as pools:
         for i in range(1, size+1):
             baseURL = f"https://en.lo4d.com/windows/audio-video-software/{i}"
             urls = get_detail_urls(baseURL)
             for url in urls:
                 try:
-                    pools.submit(lambda p: download(*p), [url])
+                    pools.submit(lambda p: download(*p), [url, basePath])
 
                 except UnboundLocalError:
                     pass
