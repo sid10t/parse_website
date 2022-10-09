@@ -116,8 +116,8 @@ if __name__ == '__main__':
         if not os.path.exists(basepath):
             os.makedirs(basepath)
 
-        for i in range(size):
-            ogn_url = f"{base_url}-{i*20}-d.html"
+        for n in range(size):
+            ogn_url = f"{base_url}-{n*20}-d.html"
             names, urls = get_download_url(ogn_url)
             with ThreadPoolExecutor(20) as pools:
                 for i in range(len(names)):
